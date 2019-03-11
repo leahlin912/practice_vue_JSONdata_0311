@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.8/vue.min.js"></script>
+    <style>
+        html, body{
+            font-family: Ariel, Microsoft JhengHei;
+            text-align: center;
+        }
+        h2{
+            font-size: 20px;
+        }
+        a{
+            color: #115372;
+        }
+        h4{
+            font-size: 16px;
+        }
+        .teacher{
+            color:#444444;
+        }
+        .lesson{
+            position: relative;
+            width: 280px;
+            height: 120px;
+            display:inline-block;
+            margin: 10px;
+            padding:12px;
+            border-radius:12px;
+            padding-top:180px;
+            overflow: hidden; 
+            box-shadow: 3px 3px 15px #7b9a9a;
+            text-align: left;
+        }
+        .lessonImage{
+            position: absolute;
+            top:0;
+            left:0;
+            height: 180px;
+            width: 100%;
+            background-size: cover;
+            background-position: center center;
+        }
+        .lessonTitle{
+            height: 30px;
+            width: 100%;
+            vertical-align: middle;
+            line-height:20px;
+            
+        }
+        .lessonTeacher{
+            height: 30px;
+            width: 100%;
+        }
+        .icons{
+            display: flex;
+            height: 20px;
+            width: 100%;
+            justify-content: space-between;
+            color:#7b9a9a;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div id='app'>
+        <div v-for="item in lessons" class='lesson'>
+            <div class="lessonImage" :style="getImage(item.img)"></div>
+            <!-- <img v-bind:src="item.img" height="100"/> -->
+            <div class="lessonTitle">
+                <a v-bind:href="item.url"><h2>{{item.title}}</h2></a>
+            </div>
+            <div class="lessonTeacher">
+                <h4 class="teacher">授課老師：{{item.teacher}}</h4>
+            </div>
+            <div class='icons'>
+                <div><img src="./good.png" width="20"> {{item.good}}</div>
+                <div><img src="./comments.png" width="20"> {{item.comments}}</div>
+                <div><img src="./user.png" width="20"> {{item.user}}</div>
+                <div>
+                    <img v-if="item.picked" src="./star-picked.png" width="20"> {{item.user}}
+                    <img v-else src="./star.png" width="20">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    new Vue({
+        el:'#app',
+        data:{
+            lessons:[],
+        },
+        mounted(){
+            fetch('./data.json')
+            .then(res => res.json())
+            .then(lessons => this.lessons = lessons);
+        },
+        methods:{
+            getImage(imgUrl){
+                return{
+                    backgroundImage:`url(${imgUrl})`,
+                }
+            }
+        }
+    })
+    </script>
+</body>
+</html>
